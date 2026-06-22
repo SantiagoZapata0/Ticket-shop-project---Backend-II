@@ -12,3 +12,5 @@ const ticketSchema = new Schema({
         ref: "events"
     }
 })
+
+export const ticketModel = model(ticketCollection, ticketSchema);
