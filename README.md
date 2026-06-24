@@ -78,11 +78,14 @@ http://localhost:8080
 `-- src
     |-- app.js
     |-- server.js
-    |-- utils.js
-    |-- middlewares/
     |-- public/
     |-- services/
+    |-- repositories/
     |-- views/
+    |-- middlewares/
+    |   |-- session.middleware.js
+    |-- utils/
+    |   |-- utils.js
     |-- dao/
     |   |-- common.dao.js
     |   |-- event.dao.js
@@ -106,6 +109,13 @@ http://localhost:8080
         |-- session.routes.js
         `-- user.routes.js
 ```
+
+## Notas sobre la arquitectura
+
+Las carpetas `services/`, `repositories/` y `dao/` forman parte de la 
+arquitectura por capas planificada para el proyecto. En esta primera entrega 
+se incluye la base del DAO (`common.dao.js`), y las capas superiores se 
+implementarán progresivamente en entregas posteriores.
 
 ## Rutas disponibles
 

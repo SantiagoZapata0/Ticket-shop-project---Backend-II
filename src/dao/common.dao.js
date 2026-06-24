@@ -8,43 +8,17 @@ export class Common{
             const result = await this.model.find();
             return result
         } catch(err){
-            return null
+            throw err
         }
     }
 
-    async getById(){
+    async getById(id){
         try{
-            const result = await this.model.findById();
+            const result = await this.model.findById(id);
             return result
         } catch(err){
-            return null
+            throw err
         }
     }
 
-    async getAll(){
-        try{
-            const result = await this.model.find();
-            return result
-        } catch(err){
-            return null
-        }
-    }
-
-    async getAll(){
-        try{
-            const result = await this.model.find();
-            return result
-        } catch(err){
-            return null
-        }
-    }
-
-    async getAll(){
-        try{
-            const result = await this.model.find();
-            return result
-        } catch(err){
-            return null
-        }
-    }
 }
