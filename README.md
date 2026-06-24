@@ -33,14 +33,18 @@ Crear un archivo `.env` en la raiz del proyecto con las siguientes variables:
 ```env
 PORT=8080
 MONGO_URL=mongodb://127.0.0.1:27017/fun-tickets
+NODE_ENV=development
+JWT_SECRET=mi_secreto
 ```
 
 Variables disponibles:
 
-| Variable | Descripcion |
-| --- | --- |
-| `PORT` | Puerto donde se ejecuta el servidor. |
-| `MONGO_URL` | URL de conexion a la base de datos MongoDB. |
+| Variable    | Descripcion                                    |
+| ----------- | ---------------------------------------------- |
+| `PORT`      | Puerto donde se ejecuta el servidor.           |
+| `MONGO_URL` | URL de conexion a la base de datos MongoDB.    |
+| `NODE_ENV`  | Entorno de ejecución (development / production)|
+| `JWT_SECRET`| Clave secreta para tokens JWT                  |  
 
 ## Como ejecutar
 
@@ -82,7 +86,6 @@ http://localhost:8080
     |-- dao/
     |   |-- common.dao.js
     |   |-- event.dao.js
-    |   |-- health.dao.js
     |   |-- ticket.dao.js
     |   |-- user.dao.js
     |-- config/
@@ -90,18 +93,17 @@ http://localhost:8080
     |   `-- env.js
     |-- controllers/
     |   |-- event.controller.js
-    |   |-- health.controller.js
     |   |-- ticket.controller.js
+    |   |-- session.controller.js
     |   `-- user.controller.js
     |-- models/
     |   |-- event.model.js
-    |   |-- health.model.js
     |   |-- ticket.model.js
     |   `-- user.model.js
     `-- routes/
         |-- event.routes.js
-        |-- health.routes.js
         |-- ticket.routes.js
+        |-- session.routes.js
         `-- user.routes.js
 ```
 
@@ -109,15 +111,15 @@ http://localhost:8080
 
 ### Health
 
-| Metodo | Ruta | Descripcion |
-| --- | --- | --- |
-| `GET` | `/api/health` | Obtiene informacion de estado de la API. |
+| Metodo | Ruta          | Descripcion                              |
+| ------ | ------------- | ---------------------------------------- |
+| `GET`  | `/api/health` | Obtiene informacion de estado de la API. |
 
 ### Usuarios
 
-| Metodo | Ruta | Descripcion |
-| --- | --- | --- |
-| `GET` | `/api/users` | Obtiene todos los usuarios registrados. |
+| Metodo | Ruta         | Descripcion                             |
+| ------ | ------------ | --------------------------------------- |
+| `GET`  | `/api/users` | Obtiene todos los usuarios registrados. |
 
 Modelo de usuario:
 
@@ -131,28 +133,29 @@ Modelo de usuario:
 
 ### Eventos
 
-| Metodo | Ruta | Descripcion |
-| --- | --- | --- |
-| `GET` | `/api/events` | Obtiene todos los eventos musicales disponibles. |
+| Metodo | Ruta          | Descripcion                                      |
+| ------ | ------------- | ------------------------------------------------ |
+| `GET`  | `/api/events` | Obtiene todos los eventos musicales disponibles. |
 
 Modelo de evento:
 
 ```js
 {
-  name: String,
+  title: String,
+  description: String,
   date: Date,
   place: String,
-  price: Number,
   capacity: Number,
-  status: Boolean
+  price: Number,
+  status: "active" | "cancelled" | "finished"
 }
 ```
 
 ### Tickets
 
-| Metodo | Ruta | Descripcion |
-| --- | --- | --- |
-| `GET` | `/api/tickets` | Obtiene todos los tickets vendidos o generados. |
+| Metodo | Ruta           | Descripcion                                     |
+| ------ | -------------- | ----------------------------------------------- |
+| `GET`  | `/api/tickets` | Obtiene todos los tickets vendidos o generados. |
 
 Modelo de ticket:
 

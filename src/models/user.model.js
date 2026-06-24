@@ -4,10 +4,17 @@ const userCollection = "users";
 
 const userSchema = new Schema({
 
+    name:{
+        type: String,
+        required: true
+    },
     email:{
         type: String,
         required: true,
-        unique: true
+        unique: true,
+        trim: true,
+        lowercase: true,
+        match: [ /^[^\s@]+@[^\s@]+\.[^\s@]+$/, "El formato de email no es valido."]
     },
     password:{
         type: String,

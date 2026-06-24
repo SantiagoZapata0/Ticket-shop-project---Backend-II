@@ -3,12 +3,35 @@ import { Schema, model } from "mongoose";
 const eventCollection = "events";
 
 const eventSchema = new Schema({
-      name: String,
-      date: Date,
-      place: String,
-      price: Number,
-      capacity: Number,
-      status: Boolean
-})
+      title: {
+            type: String,
+            required: true,
+      },
+      description: { 
+            type: String, 
+            required: true 
+      },
+      date: { 
+            type: Date, 
+            required: true
+      },
+      place: { 
+            type: String, 
+            required: true
+      },
+      capacity: { 
+            type: Number, 
+            required: true 
+      },
+      price: { 
+            type: Number, 
+            default: 0 
+      },
+      status: {
+            type: String,
+            enum: ["active", "cancelled", "finished"],
+            default: "active",
+      },
+});
 
 export const eventModel = model(eventCollection, eventSchema);
