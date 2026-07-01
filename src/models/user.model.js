@@ -4,9 +4,15 @@ const userCollection = "users";
 
 const userSchema = new Schema({
 
-    name:{
+    first_name:{
         type: String,
-        required: true
+        required: true,
+        trim: true
+    },
+    last_name:{
+        type: String,
+        required: true,
+        trim: true
     },
     email:{
         type: String,
@@ -22,9 +28,13 @@ const userSchema = new Schema({
     },
     role:{
         type: String,
-        enum: ["admin", "user"],
+        enum: ["admin", "organizer", "user"],
         default: "user"
     }
-})
+},
+{
+    timestamps: true
+}
+)
 
 export const userModel = model(userCollection, userSchema);

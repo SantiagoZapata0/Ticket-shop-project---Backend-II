@@ -21,4 +21,30 @@ export class Common{
         }
     }
 
+    async create(data){
+        try{
+            const result = await this.model.create(data);
+            return result
+        } catch(err){
+            throw err
+        }
+    }
+
+    async update(id, data){
+        try{
+            const result = await this.model.findByIdAndUpdate(id, data, { returnDocument: "after" });
+            return result
+        } catch(err){
+            throw err
+        }
+    }
+
+    async delete(id){
+        try{
+            const result = await this.model.findByIdAndDelete(id);
+            return result
+        } catch(err){
+            throw err
+        }
+    }
 }

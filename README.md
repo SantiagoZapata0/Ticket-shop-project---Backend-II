@@ -51,7 +51,7 @@ Variables disponibles:
 Modo desarrollo:
 
 ```bash
-pnpm dev
+pnpm run dev
 ```
 
 Modo produccion:
@@ -79,17 +79,17 @@ http://localhost:8080
     |-- app.js
     |-- server.js
     |-- public/
-    |-- services/
-    |-- repositories/
     |-- views/
+    |-- services/
+        |-- user.services.js
+    |-- repositories/
+    |   |-- user.repository.js
     |-- middlewares/
     |   |-- session.middleware.js
     |-- utils/
     |   |-- utils.js
     |-- dao/
     |   |-- common.dao.js
-    |   |-- event.dao.js
-    |   |-- ticket.dao.js
     |   |-- user.dao.js
     |-- config/
     |   |-- database.js
@@ -112,10 +112,9 @@ http://localhost:8080
 
 ## Notas sobre la arquitectura
 
-Las carpetas `services/`, `repositories/` y `dao/` forman parte de la 
-arquitectura por capas planificada para el proyecto. En esta primera entrega 
-se incluye la base del DAO (`common.dao.js`), y las capas superiores se 
-implementarán progresivamente en entregas posteriores.
+El proyecto sigue una arquitectura en capas: Ruta → Controller → Service → 
+Repository → DAO → Modelo. El flujo de registro de usuarios (`/api/sessions/register`) 
+implementa el patrón completo.
 
 ## Rutas disponibles
 
@@ -135,9 +134,11 @@ Modelo de usuario:
 
 ```js
 {
+  first_name: String,
+  last_name: String,
   email: String,
   password: String,
-  role: "admin" | "user"
+  role: "admin" | "organizer" | "user"
 }
 ```
 
@@ -176,6 +177,65 @@ Modelo de ticket:
 }
 ```
 
+## Cómo probar el endpoint de registro
+
+### `POST /api/sessions/register`
+
+Registra un nuevo usuario en la plataforma. La contraseña se guarda hasheada con bcrypt y nunca se devuelve en la respuesta.
+
+**Campos esperados (body JSON):**
+
+| Campo | Tipo | Obligatorio | Descripción |
+| --- | --- | --- | --- |
+| `first_name` | String | Sí | Nombre del usuario |
+| `last_name` | String | Sí | Apellido del usuario |
+| `email` | String | Sí | Se normaliza automáticamente (trim + lowercase) |
+| `password` | String | Sí | Mínimo 6 caracteres |
+
+> El campo `role` no se acepta desde el body. Todo usuario se crea con `role: "user"` por defecto.
+
+**Ejemplo de request:**
+
+```json
+{
+    "first_name": "Santiago",
+    "last_name": "Zapata",
+    "email": "santiago@gmail.com",
+    "password": "123456"
+}
+```
+
+**Respuesta exitosa (201):**
+
+```json
+{
+    "status": "Success",
+    "message": "Usuario registrado correctamente.",
+    "payload": {
+        "id": "6a446c5b146207cacaa4ed90",
+        "first_name": "Santiago",
+        "last_name": "Zapata",
+        "email": "santiago@gmail.com",
+        "role": "user"
+    }
+}
+```
+
+**Posibles errores:**
+
+| Código | Causa |
+| --- | --- |
+| `400` | Falta algún campo obligatorio |
+| `400` | El email no tiene un formato válido |
+| `400` | La contraseña tiene menos de 6 caracteres |
+| `409` | El email ya está registrado |
+
+### Cómo probarlo
+
+1. Levantar el servidor con `pnpm run dev`
+2. Enviar un `POST` a `http://localhost:8080/api/sessions/register` con Postman o Insomnia, con el body indicado arriba
+3. Verificar en MongoDB (Compass o Atlas) que el campo `password` se guarda hasheado, nunca en texto plano
+
 ## Estado actual
 
-El proyecto cuenta con rutas de consulta `GET` para usuarios, eventos, tickets y health check. Para completar el flujo de venta de tickets, se podrian agregar rutas `POST`, `PUT` y `DELETE`, validaciones, autenticacion y manejo de stock/capacidad de eventos.
+El proyecto cuenta con rutas de consulta `GET` para usuarios, eventos, tickets, session y health check. Para completar el flujo de venta de tickets, se podrian agregar rutas `POST`, `PUT` y `DELETE`, validaciones, autenticacion y manejo de stock/capacidad de eventos.
