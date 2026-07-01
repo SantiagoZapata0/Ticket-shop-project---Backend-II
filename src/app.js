@@ -31,6 +31,6 @@ app.get("/api/health", (req, res) => {
 app.use("/api/users", userRoutes);
 app.use("/api/tickets", ticketRoutes);
 app.use("/api/events", eventRoutes);
-app.use("/api/session", sessionRouter);
+app.use("/api/sessions", sessionRouter);
 
 export default app;

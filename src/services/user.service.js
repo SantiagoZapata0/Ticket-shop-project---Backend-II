@@ -45,3 +45,14 @@ export async function registerUser({first_name, last_name, email, password}){
     }
         
 }
+
+export async function getAllUsers(){
+    const users = await userRepository.getAllUsers();
+    return users.map(u => ({
+        id: u._id,
+        first_name: u.first_name,
+        last_name: u.last_name,
+        email: u.email,
+        role: u.role
+    }))
+}

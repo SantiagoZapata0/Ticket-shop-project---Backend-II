@@ -1,10 +1,11 @@
 import { userModel } from "../models/user.model.js"
+import { getAllUsers } from "../services/user.service.js";
 
-export async function getAllUsers(req, res, next){
+export async function getUsers(req, res, next){
     try{
-        const users = await userModel.find();
-        return res.status(200).json({status: "Success", payload: users});
+        const users = await getAllUsers();
+        return res.status(200).json({status: "Success", payload: users})
     } catch(err){
-        return res.status(500).json({ message: err.message });
+        return res.status(err.status || 500).json({status: "Failed", payload: err.message})
     }
 }

@@ -1,7 +1,7 @@
 import { userModel } from "../models/user.model.js"
 import { createHash, isValidPassword } from "../utils/utils.js"
 import { env } from "../config/env.js"
-import { registerUser } from "../services/user.services.js";
+import { registerUser } from "../services/user.service.js";
 import jwt from "jsonwebtoken";
 
 export async function register(req, res, next){

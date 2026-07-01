@@ -5,8 +5,16 @@ export class UserRepository{
         return await userDao.createUser(userData)
     }
 
+    async getAllUsers(){
+        return await userDao.getAll();
+    }
+
     async getUserByEmail(email){
         return await userDao.getUserByEmail(email)
+    }
+
+    async getUserById(id){
+        return await userDao.getById(id)
     }
 }
 
